@@ -6,11 +6,17 @@ const errorLogger = (error, request, response, next) => {
 // Error handling Middleware function reads the error message 
 // and sends back a response in JSON format
 const errorResponder = (err, request, response, next) => {
-    console.log(err.stack)
-    response.status(500).json({
-        message: "Internal Server Error"
+    let message = "Internal Server Error"
+    let status = 500
+    if (err.details !== undefined) {
+        message = err.message
+        status = 400
+    }
+        
+    response.status(status).json({
+        message: message
     });
-
+    
 }
 
 

@@ -7,7 +7,8 @@ const {
 const validatorHandler = require("./middleware/validatorHandler")
 const {
   getCustomerPaginateSchema,
-  getCustomerByDniSchema
+  getCustomerByDniSchema,
+  patchCustomerSchema
 } = require("./schema/customer.schema")
 
 const port = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ app.use(express.json())
 
 app.get('/:dni', validatorHandler(getCustomerByDniSchema, "params"), getCustomerByDni);
 app.get('/', validatorHandler(getCustomerPaginateSchema, "query"), getCustomersPaginated);
-app.patch('/:id', updateCustomer);
+app.patch('/:id', validatorHandler(patchCustomerSchema, "body"), updateCustomer);
 
 app.use(errorLogger)
 app.use(errorResponder)
