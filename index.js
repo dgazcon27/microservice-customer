@@ -11,7 +11,6 @@ const {
   patchCustomerSchema
 } = require("./schema/customer.schema")
 
-const port = process.env.PORT || 3000;
 const app = express()
 app.use(express.json())   
 
@@ -23,6 +22,4 @@ app.patch('/:id', validatorHandler(patchCustomerSchema, "body"), updateCustomer)
 app.use(errorLogger)
 app.use(errorResponder)
 
-app.listen(port, () =>
-  console.log(`API listening on port: ${port}!`)
-);
+module.exports = app;

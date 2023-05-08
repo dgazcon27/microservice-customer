@@ -16,6 +16,7 @@ module.exports = class CustomerService {
             try {
                 const query = getProperties(QUERY_PROPERTY_PATH, QUERY_REQUEST_GET_ONE)
                 const results = await pool.query(query, [dni]);
+                pool.close();
                 resolve(results)
             } catch (error) {
                 reject(error)
@@ -28,6 +29,7 @@ module.exports = class CustomerService {
             try {
                 const query = getProperties(QUERY_PROPERTY_PATH, QUERY_REQUEST_GET_ALL)
                 const results = await pool.query(query, [limit, offset]);
+                pool.close()
                 resolve(results)
             } catch (error) {
                 reject(error)

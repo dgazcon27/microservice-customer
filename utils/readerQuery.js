@@ -13,7 +13,7 @@ function getProperties(fileProperties, queryProperty) {
 }
 
 function getDbConf() {
-  properties = PropertiesReader('./public/database.properties');
+  const properties = PropertiesReader('./public/database.properties');
   let result = ``;
 
   try {
