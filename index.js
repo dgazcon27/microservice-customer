@@ -1,25 +1,15 @@
 const express = require('express')
-const { getCustomerByDni, getCustomersPaginated, updateCustomer } = require('./controller/customer.controller')
 const {
   errorLogger,
   errorResponder 
 } = require('./middleware/responseHandler')
-const validatorHandler = require("./middleware/validatorHandler")
-const {
-  getCustomerPaginateSchema,
-  getCustomerByDniSchema,
-  patchCustomerSchema
-} = require("./schema/customer.schema")
+const routerCustomer = require("./router/customer")
 
 const app = express()
 app.use(express.json())   
+app.use("/api/v1/customer", routerCustomer);
 
-
-app.get('/:dni', validatorHandler(getCustomerByDniSchema, "params"), getCustomerByDni);
-app.get('/', validatorHandler(getCustomerPaginateSchema, "query"), getCustomersPaginated);
-app.patch('/:id', validatorHandler(patchCustomerSchema, "body"), updateCustomer);
-
-app.use(errorLogger)
-app.use(errorResponder)
+// app.use(errorLogger)
+// app.use(errorResponder)
 
 module.exports = app;

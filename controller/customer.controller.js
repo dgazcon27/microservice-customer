@@ -46,9 +46,15 @@ async function updateCustomer(req, res, next) {
   }
 }
 
+const test = async (req, res, next) =>{
+  console.log("Calling this")
+  return res.status(200).json({})
+}
+
 
 module.exports = {
     getCustomerByDni,
     getCustomersPaginated, 
-    updateCustomer
+    updateCustomer,
+    test
 }

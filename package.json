@@ -2,13 +2,15 @@
   "name": "micro_services",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "jest --testTimeout=99999 --detectOpenHandles --forceExit",
     "start": "node index.js",
     "start:dev": "nodemon ./index.js localhost 3000"
   },
-  "pre-commit": ["test"],
+  "pre-commit": [
+    "test"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,6 +20,7 @@
     "jest": "^27.5.1",
     "joi": "^17.9.2",
     "log4js": "^6.9.1",
+    "mongoose": "^7.2.2",
     "node-jt400": "^4.4.1",
     "properties-reader": "^2.2.0",
     "supertest": "^6.3.3"
