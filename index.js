@@ -7,9 +7,9 @@ const routerCustomer = require("./router/customer")
 
 const app = express()
 app.use(express.json())   
-app.use("/api/v1/customer", routerCustomer);
+app.use("/api/v1", routerCustomer);
 
-// app.use(errorLogger)
-// app.use(errorResponder)
+app.use(errorLogger)
+app.use(errorResponder)
 
 module.exports = app;

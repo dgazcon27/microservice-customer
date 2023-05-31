@@ -1,5 +1,10 @@
 const CustomerService = require('../services/services.customer')
 const Customer = require('../models/customer')
+const mongoose = require("mongoose");
+const { custom } = require('joi');
+
+const Schema = new mongoose.Schema({ name: String });
+const Movie = mongoose.model('movie', Schema);
 
 function getCustomerByDni (req, res, next) {
     const customerService = new CustomerService();
@@ -41,14 +46,31 @@ async function updateCustomer(req, res, next) {
     response = await customerService.updateCustomer(id, bodyParsed)
     res.status(200).json({})
   } catch (error) {
-    console.log(error)
+    console.log("UPDATE CUSTOMER", error)
     next(error)
   }
 }
 
-const test = async (req, res, next) =>{
-  console.log("Calling this")
-  return res.status(200).json({})
+const getCustomers = async (req, res, next) =>{
+  const customerService = new CustomerService();
+  try {
+    const customers = (await customerService.getCustomers()).map(customer => new Customer(customer))
+    console.log(customers)
+    return res.status(200).json(customers)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const createCustomer = async (req, res, next) =>{
+  const { body } = req
+  const customerService = new CustomerService();
+  try {
+    const customer = new Customer(await customerService.createCustomer(body))
+    return res.status(200).json(customer)
+  } catch (error) {
+    next(error)
+  }
 }
 
 
@@ -56,5 +78,6 @@ module.exports = {
     getCustomerByDni,
     getCustomersPaginated, 
     updateCustomer,
-    test
+    getCustomers,
+    createCustomer
 }

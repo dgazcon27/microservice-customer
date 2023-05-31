@@ -1,26 +1,23 @@
 module.exports = class Customer {
-    constructor() {
-        this.address = "";
-        this.dni = "";
-        this.customerType = "";
-        this.name = "";
+    constructor(customer) {
+        this.dni = customer.dni;
+        this.name = customer.name;
+        this.birthday = parseDate(customer.birthday);
+        this.experience = parseExperience(customer.experience);
     }
+}
 
-    parseCustomerToModel(customer) {
-        return {
-            "DIRECCION":customer.address,
-            "NUMERO_IDENTIFICACION_CLIENTE": customer.dni,
-            "TIPOCLIENTE": customer.customerType,
-            "NOMBRE": customer.name
-        }
-    }
+function parseDate(date) {
+    day =  date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+    month = date.getMonth()+1 < 10 ? 0+(date.getMonth()+1) : date.getMonth()+1;
+    year = date.getFullYear();
 
-    parseResponseToModel(customer) {
-        //console.log(customer)
-        this.address = customer["DIRECCION"];
-        this.dni = customer["NUMERO_IDENTIFICACION_CLIENTE"];
-        this.customerType = customer["TIPOCLIENTE"];
-        this.name = customer["NOMBRE"];
-        return this;
-    }
+    return `${day}/${month}/${year}`
+}
+
+function parseExperience(experience) {
+    return experience.map(item => ({
+        years: item.years,
+        organizationName: item.organizationName
+    }))
 }
