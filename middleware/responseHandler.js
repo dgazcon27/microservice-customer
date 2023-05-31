@@ -13,6 +13,8 @@ const errorResponder = (err, request, response, next) => {
         message = err.details
         status = 400
     }
+    
+    if (process.env.DEBUG) console.log(message)
         
     response.status(status).json({
         message: message

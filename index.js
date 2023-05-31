@@ -3,6 +3,7 @@ const {
   errorLogger,
   errorResponder 
 } = require('./middleware/responseHandler')
+
 const routerCustomer = require("./router/customer")
 
 const app = express()

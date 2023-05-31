@@ -9,8 +9,6 @@ function getConnection() {
 
     const stringConnection = `${username}:${password}@${cluster}/${dbname}`
 
-    console.log(stringConnection)
-
     mongoose.connect(
     `mongodb://${stringConnection}`
     );
