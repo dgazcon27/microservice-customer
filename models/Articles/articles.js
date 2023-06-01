@@ -1,12 +1,14 @@
 const TimeStampModel = require("../TimeStampModel")
+const { parseDate } = require("../../utils/tools")
 
 module.exports = class ArticleModel extends TimeStampModel {
     constructor(article) {
-        super();
+        super(article);
         this._id = article._id;
         this.description = article.description;
         this.name = article.name;
         this.type = article.type;
-        this.expiredAt = article.expiredAt
+        this.expiredAt = parseDate(article.expiredAt);
+        this.quantity = article.quantity
     }
 }

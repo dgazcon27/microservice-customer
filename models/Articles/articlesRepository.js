@@ -7,6 +7,7 @@ const ArticleRepository = Mongoose.model('article', Mongoose.Schema({
     type: { type: String, default: ''},
     createdAt: { type: Date, default: new Date(), required: true },
     updatedAt: { type: Date, default: new Date(), required: true },
+    quantity: { type: Number, default: 0, required: true },
   }))
   
 module.exports = ArticleRepository;

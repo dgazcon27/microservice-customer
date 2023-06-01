@@ -1,10 +1,8 @@
-module.exports = class TimeStampModel { 
-    constructor() {
-        this.createdAt = new Date();
-        this.updatedAt = new Date()
-    }
+const { parseDate } = require("../utils/tools")
 
-    setUpdatedAt(date) {
-        this.updatedAt = date;
+module.exports = class TimeStampModel { 
+    constructor({createdAt, updatedAt}) {
+        this.createdAt = createdAt ? parseDate(createdAt) : new Date();
+        this.updatedAt = createdAt ? parseDate(updatedAt) : new Date();
     }
 }
