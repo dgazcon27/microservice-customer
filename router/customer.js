@@ -14,4 +14,4 @@ routerCustomer.get('/:dni', getCustomerByDni);
 routerCustomer.get('/', getCustomers);
 
 
-module.exports = routerCustomer;
+module.exports = { routerCustomer };
