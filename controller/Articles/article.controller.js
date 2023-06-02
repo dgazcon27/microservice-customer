@@ -1,5 +1,6 @@
 const ArticleService = require('../../services/Articles/services.articles')
 const ArticleModel = require('../../models/Articles/articles')
+const { convertDate } = require("../../utils/tools")
 
 const articleService = new ArticleService();
 
@@ -39,10 +40,10 @@ const getArticleById = async (req, res, next) => {
 }
 
 const updateArticle =  async (req, res, next) => {
-    const { body } = req
+    const articleBody = {...req.body, updatedAt: convertDate()}
     const { id } = req.params
     try {
-        const article = await articleService.updateArticle(body, id)
+        const article = await articleService.updateArticle(articleBody, id)
         return res.status(200).json(new ArticleModel(article))
     } catch (error) {
         next(error)
