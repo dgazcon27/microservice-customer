@@ -16,6 +16,17 @@ const createPurchase = async (req, res, next) =>{
     }
 }
 
+const getPurchases = async (req, res, next) => {
+  
+  try {
+    const purchase = new PurchaseModel(await purchaseService.getPurchases())
+    return res.status(200).json(purchase)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
-    createPurchase
+    createPurchase,
+    getPurchases
 }

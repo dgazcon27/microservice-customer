@@ -1,10 +1,11 @@
 const Mongoose = require("mongoose");
-const ArticleRepository = require("../Articles/articlesRepository");
-const Customer = require("../Customer/customerRepository");
+const Schema = Mongoose.Schema;
 
 const PurchaseRepository = Mongoose.model('purchase', Mongoose.Schema({
-    articles: [{type: ArticleRepository, required: true}],
-    client: { type: Customer, required: true }
-  }))
+    articles: [{
+      quantity: { type: Number, default: 0, required: true },
+      article: {type: Schema.Types.ObjectId, required: true, ref: 'article'}
+    }],
+}))
   
 module.exports = PurchaseRepository;
