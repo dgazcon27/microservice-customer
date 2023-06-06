@@ -1,6 +1,6 @@
 const ArticleRepository = require("../../models/Articles/articlesRepository")
 
-module.exports = class CustomerService {
+module.exports = class ArticleServices {
     createArticle(body) {
         const { name } = body
         return new Promise(async (resolve, reject) => {
@@ -49,5 +49,17 @@ module.exports = class CustomerService {
                 reject(err)
             }
         }) 
+    }
+
+    findArticlesById(ids) {
+        console.log("find multiple articles by IDs")
+        return new Promise(async (resolve, reject) => {
+            try {
+                const articles = await ArticleRepository.find({_id: { $in: ids }})
+                resolve(articles)
+            } catch (err) {
+                reject(err)
+            }
+        })
     }
 }

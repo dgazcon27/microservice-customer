@@ -50,10 +50,22 @@ const updateArticle =  async (req, res, next) => {
     }
 }
 
+const findArticlesById = async (req, res, next) => {
+    const { ids } = req.body
+    try {
+        const responseArticle = await articleService.findArticlesById(ids)
+        return res.status(200).json(responseArticle.map(article => new ArticleModel(article)))
+    } catch (error) {
+        next(error)
+    }
+    
+} 
+
 module.exports = {
     createArticle,
     getArticles,
     getArticleById,
-    updateArticle
+    updateArticle,
+    findArticlesById
 }
   

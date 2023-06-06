@@ -4,7 +4,8 @@ const {
     createArticle,
     getArticles,
     getArticleById,
-    updateArticle
+    updateArticle,
+    findArticlesById
 } = require('../controller/Articles/article.controller')
 
 
@@ -12,6 +13,7 @@ const routerArticle = Router();
 
 routerArticle.post('/', createArticle);
 routerArticle.get('/:id', getArticleById)
+routerArticle.post('/find-articles', findArticlesById);
 routerArticle.get('/', getArticles);
 routerArticle.patch('/:id', updateArticle);
 
