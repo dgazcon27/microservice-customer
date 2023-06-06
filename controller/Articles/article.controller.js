@@ -61,11 +61,26 @@ const findArticlesById = async (req, res, next) => {
     
 } 
 
+
+const restockArticle = async (req, res, next) => {
+    const { quantity } = req.body
+    const articleBody = {quantity, updatedAt: convertDate()}
+    const { id } = req.params
+    try {
+        const article = await articleService.updateArticle(articleBody, id)
+        return res.status(200).json(new ArticleModel(article))
+    } catch (error) {
+        next(error)
+    }
+    
+} 
+
 module.exports = {
     createArticle,
     getArticles,
     getArticleById,
     updateArticle,
-    findArticlesById
+    findArticlesById,
+    restockArticle
 }
   

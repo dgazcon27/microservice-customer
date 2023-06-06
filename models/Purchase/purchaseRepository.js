@@ -8,7 +8,8 @@ const PurchaseRepository = Mongoose.model('purchase', Mongoose.Schema({
       article: {type: Schema.Types.ObjectId, required: true, ref: 'article'}
     }],
     type: { type: String, default: 'OUTCOME', required: true },
-    price: { type: Number, default: 0, required: true },
+    price: { type: Number, required: true, min: [1, 'Must be at least 1, got {VALUE}'] },
+    client: {type: Schema.Types.ObjectId, required: true, ref: 'customer'}
 }))
   
 module.exports = PurchaseRepository;

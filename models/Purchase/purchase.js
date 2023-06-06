@@ -8,5 +8,6 @@ module.exports = class PurchaseModel extends TimeStampModel {
         this.articles = purchase.articles;
         this.price = purchase.price;
         this.type = purchase.type;
+        this.client = purchase.client;
     }
 }

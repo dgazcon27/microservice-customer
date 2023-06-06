@@ -9,18 +9,42 @@ const createPurchase = async (req, res, next) =>{
     try {
       const articleService = new ArticleServices()
       const { articles } = body
-      const articleList = articles.map(item => item.article_id);
-      console.log("extracted articles", articleList)
+      const articleList = articles.map(item => item.article);
       const responseArticle = await articleService.findArticlesById(articleList);
       
       // validate quantity available
-      const checkedAvailability = checkArticlesAvailables(articles, responseArticle);
+
+      console.log("Setting quantity article by id_article")
+      const articlesAmounts = setArticlesAmount(articles)
+      console.log("check availability of articles")
+      const checkedAvailability = checkArticlesAvailables(articlesAmounts, responseArticle);
       if (checkedAvailability.length > 0) {
         return res.status(400).json({message: `Article ${checkedAvailability[0].name} not available`})
       }
 
       // Create purchase 
-      const purchase = new PurchaseModel(await purchaseService.createPurchase(body, responseArticle))
+      const purchase = new PurchaseModel(await purchaseService.createPurchase(body))
+
+      // Update articles with new amount
+      const articlesToUpdate = responseArticle.map(item => {
+        return {
+          ...item,
+          _id: item._id,
+          quantity:item.quantity-articlesAmounts[item._id]
+        }
+      })
+      
+      const updatedArticles = articlesToUpdate.map(item => {
+        return new Promise((resolve, reject) => {
+          articleService.updateArticle({quantity: item.quantity}, item._id )
+          .then(res => resolve(res)) 
+          .catch(err => reject(err)) 
+        })
+      })
+
+      const response = await Promise.all(updatedArticles)
+      console.log(response)
+
       return res.status(200).json(purchase)
     } catch (error) {
       next(error)
@@ -36,17 +60,21 @@ const getPurchases = async (req, res, next) => {
   }
 }
 
-const checkArticlesAvailables = (articlesRequested, articles) => {
-  const idsArticles = {}
-  articlesRequested.forEach(element => {
-    idsArticles[element.article_id] = element.quantity;
-  });
+const checkArticlesAvailables = (idsArticles, articles) => {
   const responseAvailables = []
   articles.forEach(item => {
     if (item.quantity-idsArticles[item._id] < 0) responseAvailables.push(item)
   });
   console.log("Articles not availables", responseAvailables)
   return responseAvailables
+}
+
+const setArticlesAmount = (articlesRequested) => {
+  const idsArticles = {}
+  articlesRequested.forEach(element => {
+    idsArticles[element.article] = element.quantity;
+  });
+  return idsArticles;
 }
 
 module.exports = {
