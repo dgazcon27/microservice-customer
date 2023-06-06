@@ -63,12 +63,14 @@ const findArticlesById = async (req, res, next) => {
 
 
 const restockArticle = async (req, res, next) => {
-    const { quantity } = req.body
-    const articleBody = {quantity, updatedAt: convertDate()}
+    let { quantity } = req.body
     const { id } = req.params
     try {
-        const article = await articleService.updateArticle(articleBody, id)
-        return res.status(200).json(new ArticleModel(article))
+        const article = await articleService.getArticleById(id)
+        quantity += article.quantity;
+        const articleBody = {quantity, updatedAt: convertDate()}
+        const responseArticle = await articleService.updateArticle(articleBody, id)
+        return res.status(200).json(new ArticleModel(responseArticle))
     } catch (error) {
         next(error)
     }

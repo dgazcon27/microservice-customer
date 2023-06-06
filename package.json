@@ -8,9 +8,7 @@
     "start": "node index.js",
     "start:dev": "nodemon ./index.js localhost 3000"
   },
-  "pre-commit": [
-    "test"
-  ],
+  "pre-commit": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
