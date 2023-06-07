@@ -12,12 +12,13 @@ const {
 
 const routerArticle = Router();
 
-routerArticle.post('/', createArticle);
+routerArticle.get('/restock-article/:id', restockArticle)
 routerArticle.get('/:id', getArticleById)
+routerArticle.get('/', getArticles);
+
+routerArticle.post('/', createArticle);
 routerArticle.post('/find-articles', findArticlesById);
 // Endpoint para la reposicion de articulos
-routerArticle.patch('/restock-article/:id', restockArticle)
-routerArticle.get('/', getArticles);
 routerArticle.patch('/:id', updateArticle);
 
 module.exports = { routerArticle }

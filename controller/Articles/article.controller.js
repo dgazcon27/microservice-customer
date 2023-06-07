@@ -1,6 +1,8 @@
 const ArticleService = require('../../services/Articles/services.articles')
+const PurchaseService = require('../../services/Purchase/services.purchase')
 const ArticleModel = require('../../models/Articles/articles')
-const { convertDate } = require("../../utils/tools")
+const { convertDate } = require("../../utils/tools");
+const PurchaseModel = require('../../models/Purchase/purchase');
 
 const articleService = new ArticleService();
 
@@ -61,21 +63,20 @@ const findArticlesById = async (req, res, next) => {
     
 } 
 
-
 const restockArticle = async (req, res, next) => {
-    let { quantity } = req.body
     const { id } = req.params
+    const purchaseService = new PurchaseService()
     try {
-        const article = await articleService.getArticleById(id)
-        quantity += article.quantity;
-        const articleBody = {quantity, updatedAt: convertDate()}
-        const responseArticle = await articleService.updateArticle(articleBody, id)
-        return res.status(200).json(new ArticleModel(responseArticle))
+        const filter = {'articles.article': id, type: 'INCOME'}
+        const responseArticle = await purchaseService.getPurchasesByIdAndType(filter)
+        if (responseArticle.length === 0)
+            return res.status(404).json({message: 'Article not found'})
+
+        return res.status(200).json(responseArticle.map(item => new PurchaseModel(item)) )
     } catch (error) {
         next(error)
     }
-    
-} 
+}
 
 module.exports = {
     createArticle,
