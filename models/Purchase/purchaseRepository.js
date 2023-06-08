@@ -1,5 +1,6 @@
 const Mongoose = require("mongoose");
 const Schema = Mongoose.Schema;
+const Customer = require("../Customer/customerRepository")
 
 
 const PurchaseRepository = Mongoose.model('purchase', Mongoose.Schema({
@@ -9,7 +10,7 @@ const PurchaseRepository = Mongoose.model('purchase', Mongoose.Schema({
     }],
     type: { type: String, default: 'OUTCOME', required: true },
     price: { type: Number, required: true, min: 0},
-    client: {type: Schema.Types.ObjectId, required: true, ref: 'customer'},
+    client: {type: Schema.Types.ObjectId, required: true, ref: 'customer'}
     
 }, { timestamps: true }))
   

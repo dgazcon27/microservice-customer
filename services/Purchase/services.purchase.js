@@ -29,9 +29,15 @@ module.exports = class PurchaseService {
         console.log(`Return articles by filter ${filter}`)
         console.log(filter)
         return new Promise(async (resolve, reject) => {
-            const purchases = await PurchaseRepository.find(filter)
+            const purchases = await PurchaseRepository.find({})
             .populate({path:'articles.article', select: 'name unitPrice'})
-            .populate({path:'client', select: 'name dni'});
+            .populate({
+                path:'client', 
+                match: {
+                    dni: filter
+                },
+                populate: { path: 'client' }
+            });
             console.log(`Return articles by filter ${filter}`)
             resolve(purchases)
         })
