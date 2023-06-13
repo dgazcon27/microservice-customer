@@ -22,11 +22,11 @@ module.exports = class ArticleServices {
         })
     }
 
-    getArticleById(_id) {
+    getArticleByField(filter) {
         return new Promise(async (resolve, reject) => {
             try {
-                const article = await ArticleRepository.find({ _id });
-                if (article.length === 0) reject({details: `Article with id ${_id} does not exist.`})
+                const article = await ArticleRepository.find(filter);
+                if (article.length === 0) reject({details: `Article does not exist.`})
                 resolve(article[0]);
             } catch (err) {
                 reject(err)
@@ -43,7 +43,7 @@ module.exports = class ArticleServices {
                 if (responseArticle.modifiedCount <= 0) {
                     reject({details: `Update article failed`})
                 }
-                const article = await this.getArticleById(_id)
+                const article = await this.getArticleByField({_id})
                 resolve(article);
             } catch (err) {
                 reject(err)

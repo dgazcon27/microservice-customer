@@ -1,5 +1,6 @@
 const PurchaseRepository = require("../../models/Purchase/purchaseRepository")
 const CustomerService = require("../../services/Customer/services.customer")
+const ArticleServices = require("../../services/Articles/services.articles")
 
 module.exports = class PurchaseService {
     createPurchase(body) {
@@ -39,4 +40,15 @@ module.exports = class PurchaseService {
             resolve(purchases)
         })
     }
+
+    // getPurchasesByArticle(name) {
+    //     console.log("Gtting article by name")
+    //     console.log(name)
+    //     return new Promise(async (resolve, reject) => {
+    //         const articleService = new ArticleServices();
+    //         const article = await articleService.get
+    //     })
+    // }
+
+
 }

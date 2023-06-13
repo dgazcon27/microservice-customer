@@ -30,15 +30,17 @@ const getArticles = async (req, res, next) => {
     }
 }
 
-const getArticleById = async (req, res, next) => {
-    console.log("Begin get article by ID")
-    const { id } = req.params
-    try {
-        const article = await articleService.getArticleById(id)
-        return res.status(200).json(new ArticleModel(article))
-    } catch (error) {
-        next(error)
-    }
+const getArticleByField = async (req, res, next) => {
+    console.log("Begin get article by filter")
+    const { body } = req
+    console.log(body)
+    // try {
+    //     const article = await articleService.getArticleByField(body)
+    //     return res.status(200).json(new ArticleModel(article))
+        return res.status(200).json({})
+    // } catch (error) {
+    //     next(error)
+    // }
 }
 
 const updateArticle =  async (req, res, next) => {
@@ -81,7 +83,7 @@ const restockArticle = async (req, res, next) => {
 module.exports = {
     createArticle,
     getArticles,
-    getArticleById,
+    getArticleByField,
     updateArticle,
     findArticlesById,
     restockArticle

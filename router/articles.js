@@ -3,7 +3,7 @@ const { Router } = require("express");
 const { 
     createArticle,
     getArticles,
-    getArticleById,
+    getArticleByField,
     updateArticle,
     findArticlesById,
     restockArticle
@@ -13,11 +13,11 @@ const {
 const routerArticle = Router();
 
 routerArticle.get('/restock-article/:id', restockArticle)
-routerArticle.get('/:id', getArticleById)
 routerArticle.get('/', getArticles);
 
-routerArticle.post('/', createArticle);
 routerArticle.post('/find-articles', findArticlesById);
+routerArticle.post('/filter-article', getArticleByField)
+routerArticle.post('/', createArticle);
 // Endpoint para la reposicion de articulos
 routerArticle.patch('/:id', updateArticle);
 

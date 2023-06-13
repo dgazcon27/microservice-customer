@@ -123,6 +123,15 @@ const getPurchasesByDni = async (req, res, next) => {
   }
 }
 
+// const getPurchasesByArticle = async(req, res, next) => {
+//   const { name } = req.body
+//   try {
+//     const responsePurchase = await purchaseService.getPurchasesByIdAndType(dni)
+//   } catch (error) {
+//     next(error)
+//   }
+// }
+
 const checkArticlesAvailables = (idsArticles, articles) => {
   const responseAvailables = []
   articles.forEach(item => {
@@ -144,5 +153,6 @@ module.exports = {
     createPurchase,
     getPurchases,
     restockArticle,
-    getPurchasesByDni
+    getPurchasesByDni,
+    // getPurchasesByArticle
 }
