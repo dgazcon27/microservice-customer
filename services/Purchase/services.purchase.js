@@ -1,4 +1,5 @@
 const PurchaseRepository = require("../../models/Purchase/purchaseRepository")
+const CustomerService = require("../../services/Customer/services.customer")
 
 module.exports = class PurchaseService {
     createPurchase(body) {
@@ -25,14 +26,16 @@ module.exports = class PurchaseService {
         })
     }
 
-    getPurchasesByIdAndType(filter) {
-        console.log(`Return articles by filter ${filter}`)
-        console.log(filter)
+    getPurchasesByIdAndType(dni) {
+        console.log(`Return articles by filter ${dni}`)
+        console.log(dni)
         return new Promise(async (resolve, reject) => {
-            const purchases = await PurchaseRepository.find(filter)
+            const customerService = new CustomerService();
+            const customer = await customerService.getCustomerByDni(dni);
+            console.log(customer)
+            const purchases = await PurchaseRepository.find({client: customer._id})
             .populate({path:'articles.article', select: 'name unitPrice'})
-            .populate({path:'client', select: 'name dni'});
-            console.log(`Return articles by filter ${filter}`)
+            .populate('client');
             resolve(purchases)
         })
     }

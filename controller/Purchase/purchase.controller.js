@@ -113,8 +113,7 @@ const restockArticle = async(req, res, next) => {
 const getPurchasesByDni = async (req, res, next) => {
   const { dni } = req.params
   try {
-    const filter = {"client": dni}
-    const responsePurchase = await purchaseService.getPurchasesByIdAndType(filter)
+    const responsePurchase = await purchaseService.getPurchasesByIdAndType(dni)
     if (responsePurchase.length === 0)
         return res.status(404).json({message: `Purchases for customer id: ${dni} not found`})
 
