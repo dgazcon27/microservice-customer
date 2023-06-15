@@ -23,11 +23,13 @@ module.exports = class ArticleServices {
     }
 
     getArticleByField(filter) {
+        console.log("Finding article by filter")
+        console.log(filter)
         return new Promise(async (resolve, reject) => {
             try {
                 const article = await ArticleRepository.find(filter);
                 if (article.length === 0) reject({details: `Article does not exist.`})
-                resolve(article[0]);
+                resolve(article);
             } catch (err) {
                 reject(err)
             }

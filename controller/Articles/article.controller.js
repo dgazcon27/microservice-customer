@@ -33,14 +33,18 @@ const getArticles = async (req, res, next) => {
 const getArticleByField = async (req, res, next) => {
     console.log("Begin get article by filter")
     const { body } = req
-    console.log(body)
-    // try {
-    //     const article = await articleService.getArticleByField(body)
-    //     return res.status(200).json(new ArticleModel(article))
-        return res.status(200).json({})
-    // } catch (error) {
-    //     next(error)
-    // }
+    if (body.name) {
+        body.name = { $regex: '.*' + body.name + '.*' }
+    }
+    try {
+        const article = await articleService.getArticleByField(body)
+        if (article.details)
+            return res.status(404).json({message: article.details})
+        
+        return res.status(200).json(article.map(item => new ArticleModel(item)))
+    } catch (error) {
+        next(error)
+    }
 }
 
 const updateArticle =  async (req, res, next) => {
