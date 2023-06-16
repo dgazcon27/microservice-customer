@@ -34,7 +34,7 @@ const getArticleByField = async (req, res, next) => {
     console.log("Begin get article by filter")
     const { body } = req
     if (body.name) {
-        body.name = { $regex: '.*' + body.name + '.*' }
+        body.name = { $regex: '.*' + body.name + '.*', $options: 'i' }
     }
     try {
         const article = await articleService.getArticleByField(body)
