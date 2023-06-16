@@ -6,7 +6,8 @@ const {
     getArticleByField,
     updateArticle,
     findArticlesById,
-    restockArticle
+    restockArticle,
+    createProductByText
 } = require('../controller/Articles/article.controller')
 
 
@@ -17,6 +18,7 @@ routerArticle.get('/', getArticles);
 
 routerArticle.post('/find-articles', findArticlesById);
 routerArticle.post('/filter-article', getArticleByField)
+routerArticle.post('/create-product-by-text', createProductByText)
 routerArticle.post('/', createArticle);
 // Endpoint para la reposicion de articulos
 routerArticle.patch('/:id', updateArticle);

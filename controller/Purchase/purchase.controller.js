@@ -35,13 +35,13 @@ const createPurchase = async (req, res, next) =>{
         return {
           ...item,
           _id: item._id,
-          quantity:item.quantity-articlesAmounts[item._id]
+          quantityAvailable:item.quantityAvailable-articlesAmounts[item._id]
         }
       })
       
       const updatedArticles = articlesToUpdate.map(item => {
         return new Promise((resolve, reject) => {
-          articleService.updateArticle({quantity: item.quantity}, item._id )
+          articleService.updateArticle({quantityAvailable: item.quantityAvailable}, item._id )
           .then(res => resolve(res)) 
           .catch(err => reject(err)) 
         })
@@ -89,13 +89,13 @@ const restockArticle = async(req, res, next) => {
     const articlesToUpdate = responseArticle.map(item => {
       return {
         _id: item._id,
-        quantity:item.quantity+articlesAmounts[item._id]
+        quantityAvailable:item.quantityAvailable+articlesAmounts[item._id]
       }
     })
 
     const updatedArticles = articlesToUpdate.map(item => {
       return new Promise((resolve, reject) => {
-        articleService.updateArticle({quantity: item.quantity}, item._id )
+        articleService.updateArticle({quantityAvailable: item.quantityAvailable}, item._id )
         .then(res => resolve(res)) 
         .catch(err => reject(err)) 
       })
@@ -135,7 +135,7 @@ const getPurchasesByDni = async (req, res, next) => {
 const checkArticlesAvailables = (idsArticles, articles) => {
   const responseAvailables = []
   articles.forEach(item => {
-    if (item.quantity-idsArticles[item._id] < 0) responseAvailables.push(item)
+    if (item.quantityAvailable-idsArticles[item._id] < 0) responseAvailables.push(item)
   });
   console.log("Articles not availables", responseAvailables)
   return responseAvailables
@@ -144,7 +144,7 @@ const checkArticlesAvailables = (idsArticles, articles) => {
 const setArticlesAmount = (articlesRequested) => {
   const idsArticles = {}
   articlesRequested.forEach(element => {
-    idsArticles[element.article] = element.quantity;
+    idsArticles[element.article] = element.quantityAvailable;
   });
   return idsArticles;
 }

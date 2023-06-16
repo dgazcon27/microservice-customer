@@ -84,12 +84,41 @@ const restockArticle = async (req, res, next) => {
     }
 }
 
+const createProductByText = async(req, res, next) => {
+    console.log("requesting creation from message");
+    const { message } = req.body;
+    const itemList = message.split(",").map(item => item.trim());
+    if (itemList.length !== 5) {
+        console.log("Request body", itemList);
+        return res.status(400).json({message: 'Inconsistency in amount of fields'});
+    }
+    const article = getItemFromList(itemList);
+    console.log(article);
+    productPrice = parseFloat((article.totalCostProduct/article.unitPerPackage).toFixed(2));
+    profitProduct = parseFloat(((productPrice*article.profit)/100).toFixed(2));
+    productCost = parseFloat((productPrice + profitProduct).toFixed(2));
+    resultTotalProfit = ((article.totalCostProduct*30)/100)+article.totalCostProduct
+    totalProfit = parseFloat((resultTotalProfit-article.totalCostProduct).toFixed(2))
+    return res.status(200).json({productPrice, profitProduct, productCost, totalProfit});
+}
+
+const getItemFromList = (itemList) => {
+    return {
+        name: itemList[0],
+        unitPerPackage: parseInt(itemList[1]),
+        unitSell: parseInt(itemList[2]),
+        profit: parseFloat(itemList[3]),
+        totalCostProduct: parseFloat(itemList[4])
+    };
+}
+
 module.exports = {
     createArticle,
     getArticles,
     getArticleByField,
     updateArticle,
     findArticlesById,
-    restockArticle
+    restockArticle,
+    createProductByText
 }
   

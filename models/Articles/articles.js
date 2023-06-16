@@ -9,7 +9,10 @@ module.exports = class ArticleModel extends TimeStampModel {
         this.name = article.name;
         this.type = article.type;
         this.expiredAt = parseDate(article.expiredAt);
-        this.quantity = article.quantity;
+        this.quantityAvailable = article.quantityAvailable;
         this.unitPrice = article.unitPrice;
+        this.packageUnit = article.packageUnit
+        this.totalCost = article.totalCost
+        this.profit = article.profit
     }
 }
