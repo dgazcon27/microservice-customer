@@ -99,7 +99,8 @@ const createProductByText = async(req, res, next) => {
     productCost = parseFloat((productPrice + profitProduct).toFixed(2));
     resultTotalProfit = ((article.totalCostProduct*30)/100)+article.totalCostProduct
     totalProfit = parseFloat((resultTotalProfit-article.totalCostProduct).toFixed(2))
-    return res.status(200).json({productPrice, profitProduct, productCost, totalProfit});
+    totalProduct = parseFloat((totalProfit+article.totalCostProduct).toFixed(2))
+    return res.status(200).json({productPrice, profitProduct, productCost, totalProfit, totalProduct});
 }
 
 const getItemFromList = (itemList) => {
