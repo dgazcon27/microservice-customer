@@ -41,14 +41,11 @@ module.exports = class PurchaseService {
         })
     }
 
-    // getPurchasesByArticle(name) {
-    //     console.log("Gtting article by name")
-    //     console.log(name)
-    //     return new Promise(async (resolve, reject) => {
-    //         const articleService = new ArticleServices();
-    //         const article = await articleService.get
-    //     })
-    // }
-
-
+    getPurchasesByArticle(_id) {
+        console.log("Getting article by id")
+        return new Promise(async (resolve, reject) => {
+            const articleResponse = await PurchaseRepository.find({articles: _id})
+            resolve(articleResponse)
+        })
+    }
 }

@@ -123,17 +123,22 @@ const getPurchasesByDni = async (req, res, next) => {
   }
 }
 
-// const getPurchasesByArticle = async(req, res, next) => {
-//   const { name } = req.body
-//   try {
-//     const responsePurchase = await purchaseService.getPurchasesByIdAndType(dni)
-//   } catch (error) {
-//     next(error)
-//   }
-// }
+const getPurchasesByArticle = async(req, res, next) => {
+  const { idArticle } = req.body
+  try {
+    const responsePurchase = await purchaseService.getPurchasesByArticle(idArticle)
+    if (responsePurchase.length === 0) return res.status(404).json({message: "Article doesn't exist."})
+    return res.status(200).json(responsePurchase)
+  } catch (error) {
+    next(error)
+  }
+}
 
+// Verify if quantity to purchase is available
 const checkArticlesAvailables = (idsArticles, articles) => {
+
   const responseAvailables = []
+  // Saving items that doest't have enough quantity available
   articles.forEach(item => {
     if (item.quantityAvailable-idsArticles[item._id] < 0) responseAvailables.push(item)
   });
@@ -143,6 +148,7 @@ const checkArticlesAvailables = (idsArticles, articles) => {
 
 const setArticlesAmount = (articlesRequested) => {
   const idsArticles = {}
+  // Creando objeto con clave valor articleId - quantity
   articlesRequested.forEach(element => {
     idsArticles[element.article] = element.quantityAvailable;
   });
@@ -154,5 +160,5 @@ module.exports = {
     getPurchases,
     restockArticle,
     getPurchasesByDni,
-    // getPurchasesByArticle
+    getPurchasesByArticle
 }

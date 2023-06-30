@@ -9,8 +9,6 @@ const ArticleRepository = Mongoose.model('article', Mongoose.Schema({
     updatedAt: { type: Date, default: new Date(), required: true },
     quantityAvailable: { type: Number, default: 0, required: true },
     unitPrice: { type: Number, default: 0, required: true },
-    totalCostPackage: { type: Number, default: 0, required: true },
-    profit: { type: Number, default: 0, required: true }
   }))
   
 module.exports = ArticleRepository;

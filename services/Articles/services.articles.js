@@ -6,9 +6,9 @@ module.exports = class ArticleServices {
         return new Promise(async (resolve, reject) => {
             try {
                 const count = await ArticleRepository.countDocuments({ name });
-                if(count > 0) reject({details: `Article with name ${name} already exists.`})
+                if(count > 0) return reject({details: `Article with name ${name} already exists.`})
                 const article = await new ArticleRepository(body).save();
-                resolve(article);
+                return resolve(article);
             } catch (err) {
                 reject(err)
             }
@@ -28,8 +28,8 @@ module.exports = class ArticleServices {
         return new Promise(async (resolve, reject) => {
             try {
                 const article = await ArticleRepository.find(filter);
-                if (article.length === 0) reject({details: `Article does not exist.`})
-                resolve(article);
+                if (article.length === 0) return reject({details: `Article does not exist.`})
+                return resolve(article);
             } catch (err) {
                 reject(err)
             }
@@ -43,10 +43,10 @@ module.exports = class ArticleServices {
                 const responseArticle = await ArticleRepository.updateOne({_id}, body);
                 console.log(responseArticle)
                 if (responseArticle.modifiedCount <= 0) {
-                    reject({details: `Update article failed`})
+                    return reject({details: `Update article failed`})
                 }
                 const article = await this.getArticleByField({_id})
-                resolve(article);
+                return resolve(article);
             } catch (err) {
                 reject(err)
             }
@@ -62,6 +62,19 @@ module.exports = class ArticleServices {
             } catch (err) {
                 reject(err)
             }
+        })
+    }
+
+    deleteArticleById(_id) {
+        console.log("Deleting article")
+        return new Promise( async(resolve, reject) => {
+            try {
+                const article = await ArticleRepository.deleteOne({_id})
+                resolve(article)
+            } catch (error) {
+                reject(error)
+            }
+
         })
     }
 }
