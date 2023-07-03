@@ -5,8 +5,6 @@ module.exports = class ArticleServices {
         const { name } = body
         return new Promise(async (resolve, reject) => {
             try {
-                const count = await ArticleRepository.countDocuments({ name });
-                if(count > 0) return reject({details: `Article with name ${name} already exists.`})
                 const article = await new ArticleRepository(body).save();
                 return resolve(article);
             } catch (err) {
@@ -28,7 +26,7 @@ module.exports = class ArticleServices {
         return new Promise(async (resolve, reject) => {
             try {
                 const article = await ArticleRepository.find(filter);
-                if (article.length === 0) return reject({details: `Article does not exist.`})
+                if (article.length === 0) return resolve([])
                 return resolve(article);
             } catch (err) {
                 reject(err)

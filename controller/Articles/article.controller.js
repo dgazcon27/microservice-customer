@@ -9,16 +9,32 @@ const articleService = new ArticleService();
 const createArticle = async (req, res, next) =>{
     console.log("Begin create article")
     const { body } = req
+    let article = null;
     try {
-        // const count = await articleService.getArticleByField({name: body.name})
-        // if (count.length == 0) {
+        let articleSearch = await articleService.getArticleByField({name: body.name})
+        if (articleSearch.length === 0) {
             console.log("Article doesn't exist. Creating")
-            const article = new ArticleModel(await articleService.createArticle(body))
+            article = new ArticleModel(await articleService.createArticle(body))
             console.log("Article create successfully")
-        // }
-        //const purchaseService = new PurchaseService()
-        
-        return res.status(200).json(article)
+        } else {
+            //update article availability
+            let quantityAvailable = body.quantityAvailable + articleSearch[0].quantityAvailable
+            article = (await articleService.updateArticle({quantityAvailable}, articleSearch[0]._id))[0]
+        }
+        const purchaseService = new PurchaseService()
+        console.log("ARTICLE", article)
+
+        const bodyPurchase = {
+            articles: [{ article: article._id, quantityAvailable: body.quantityAvailable}],
+            type: 'INCOME',
+            price: 0,
+            client: body.createdBy
+        }
+        const createdPurchase = await purchaseService.createPurchase(bodyPurchase)
+        console.log(createdPurchase)
+        console.log(createdPurchase.hasOwnProperty('_id'))
+        if(createdPurchase.hasOwnProperty('_id')) return res.status(500).json({message: "Internal server error"});
+        return res.status(201).json({message: "Article created successfully"});
     } catch (error) {
         next(error)
     }
