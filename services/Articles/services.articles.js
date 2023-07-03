@@ -22,7 +22,6 @@ module.exports = class ArticleServices {
 
     getArticleByField(filter) {
         console.log("Finding article by filter")
-        console.log(filter)
         return new Promise(async (resolve, reject) => {
             try {
                 const article = await ArticleRepository.find(filter);
@@ -39,7 +38,6 @@ module.exports = class ArticleServices {
         return new Promise(async (resolve, reject) => {
             try {
                 const responseArticle = await ArticleRepository.updateOne({_id}, body);
-                console.log(responseArticle)
                 if (responseArticle.modifiedCount <= 0) {
                     return reject({details: `Update article failed`})
                 }

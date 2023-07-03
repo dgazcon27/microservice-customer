@@ -13,7 +13,6 @@ const createArticle = async (req, res, next) =>{
     try {
         let articleSearch = await articleService.getArticleByField({name: body.name})
         if (articleSearch.length === 0) {
-            console.log("Article doesn't exist. Creating")
             article = new ArticleModel(await articleService.createArticle(body))
             console.log("Article create successfully")
         } else {
@@ -22,8 +21,6 @@ const createArticle = async (req, res, next) =>{
             article = (await articleService.updateArticle({quantityAvailable}, articleSearch[0]._id))[0]
         }
         const purchaseService = new PurchaseService()
-        console.log("ARTICLE", article)
-
         const bodyPurchase = {
             articles: [{ article: article._id, quantityAvailable: body.quantityAvailable}],
             type: 'INCOME',
@@ -91,15 +88,29 @@ const findArticlesById = async (req, res, next) => {
 } 
 
 const restockArticle = async (req, res, next) => {
+    console.log("\nRestocking an article.")
     const { id } = req.params
-    const purchaseService = new PurchaseService()
+    const { quantityAvailable } = req.body
     try {
-        const filter = {'articles.article': id, type: 'INCOME'}
-        const responseArticle = await purchaseService.getPurchasesByIdAndType(filter)
-        if (responseArticle.length === 0)
-            return res.status(404).json({message: 'Article not found'})
+        // Update quantityAvailable
+        const articleResponse = await articleService.getArticleByField({_id:id});
+        if (articleResponse.length === 0) return res.status(404).json({ message: 'Article does not exist.'})
+        const article = articleResponse[0];
+        const quantity = article.quantityAvailable + quantityAvailable;
+        const updateArticle = await articleService.updateArticle({quantityAvailable: quantity}, article._id)
+        if (updateArticle.length === 0) return res.status(500).json({ message: 'Internal server error.'})
 
-        return res.status(200).json(responseArticle.map(item => new PurchaseModel(item)) )
+        // Creating log in purchase for restock
+        const purchaseService = new PurchaseService()
+        const bodyPurchase = {
+            articles: [{ article: article._id, quantityAvailable: quantity}],
+            type: 'INCOME',
+            price: 0,
+            client: article.createdBy
+        }
+        const createdPurchase = await purchaseService.createPurchase(bodyPurchase)
+        if(createdPurchase.hasOwnProperty('_id')) return res.status(500).json({message: "Internal server error"});
+        return res.status(201).json({message: "Article restock successfully"});
     } catch (error) {
         next(error)
     }
@@ -110,7 +121,6 @@ const createProductByText = async(req, res, next) => {
     const { message } = req.body;
     const itemList = message.split(",").map(item => item.trim());
     if (itemList.length !== 5) {
-        console.log("Request body", itemList);
         return res.status(400).json({message: 'Inconsistency in amount of fields'});
     }
     const article = getItemFromList(itemList);

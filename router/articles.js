@@ -16,7 +16,7 @@ const {
 
 const routerArticle = Router();
 
-routerArticle.get('/restock-article/:id', restockArticle)
+routerArticle.patch('/restock-article/:id', restockArticle)
 routerArticle.get('/', getArticles);
 
 routerArticle.post('/find-articles', findArticlesById);
