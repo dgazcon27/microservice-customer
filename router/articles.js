@@ -9,7 +9,8 @@ const {
     restockArticle,
     createProductByText,
     createProductoFromMessage,
-    deleteArticleById
+    deleteArticleById,
+    uploadImageArticle
 } = require('../controller/Articles/article.controller')
 
 //TODO: Validar que el tipo de archivo ingresado sea el correcto: JSON
@@ -23,6 +24,7 @@ routerArticle.post('/find-articles', findArticlesById);
 routerArticle.post('/filter-article', getArticleByField)
 routerArticle.post('/article-profit-by-text', createProductByText)
 routerArticle.post('/create-product-from-msg', createProductoFromMessage)
+routerArticle.post('/upload', uploadImageArticle)
 routerArticle.post('/', createArticle);
 // Endpoint para la reposicion de articulos
 routerArticle.patch('/:id', updateArticle);

@@ -1,10 +1,12 @@
 const ArticleService = require('../../services/Articles/services.articles')
 const PurchaseService = require('../../services/Purchase/services.purchase')
 const ArticleModel = require('../../models/Articles/articles')
-const { convertDate } = require("../../utils/tools");
+const { convertDate, getFolderPath } = require("../../utils/tools");
 const PurchaseModel = require('../../models/Purchase/purchase');
 
 const articleService = new ArticleService();
+const FOLDER_MODULE = 'articles';
+const folderPath = getFolderPath(FOLDER_MODULE);
 
 const createArticle = async (req, res, next) =>{
     console.log("Begin create article")
@@ -172,6 +174,18 @@ const deleteArticleById = (req, res, next) => {
     } 
 }
 
+const uploadImageArticle = async (req, res, next) => {
+    const { image } = req.files;
+
+    if (!image) return res.sendStatus(400);
+
+    if (/^image/.test(image.mimetype)) return res.sendStatus(400);
+    
+    image.mv(`${folderPath}/${image.name}`);
+    // All good
+    return res.sendStatus(200);
+}
+
 const getItemFromList = (itemList) => {
     return {
         name: itemList[0],
@@ -191,6 +205,7 @@ module.exports = {
     restockArticle,
     createProductByText,
     createProductoFromMessage,
-    deleteArticleById
+    deleteArticleById,
+    uploadImageArticle
 }
   

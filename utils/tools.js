@@ -1,3 +1,5 @@
+const path = require("path");
+
 function parseDate(date = new Date()) {
     const {day, month, year} = extractDate(date)
     return `${day}/${month}/${year}`
@@ -15,10 +17,15 @@ function extractDate(date) {
     year = extractDate.getFullYear();
 
     return {day, month, year}
+}
 
+function getFolderPath(folder) {
+    const rootFolder = process.env.FOLDER_UPLOAD
+    return path.join(path.dirname(__dirname), rootFolder, folder);
 }
 
 module.exports = {
     parseDate,
-    convertDate
+    convertDate,
+    getFolderPath
 }

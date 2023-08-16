@@ -1,5 +1,6 @@
 const express = require('express')
 var cors = require('cors')
+const fileUpload = require('express-fileupload');
 const {
   errorLogger,
   errorResponder 
@@ -11,6 +12,7 @@ const { routerPurchase } = require("./router/purchase")
 
 const app = express()
 app.use(cors())
+app.use(fileUpload())
 app.use(express.json())   
 app.use("/api/v1/customer", routerCustomer);
 app.use("/api/v1/article", routerArticle);
