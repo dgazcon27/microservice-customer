@@ -11,6 +11,7 @@ module.exports = class ArticleModel extends TimeStampModel {
         this.expiredAt = parseDate(article.expiredAt);
         this.quantityAvailable = article.quantityAvailable;
         this.unitPrice = article.unitPrice;
-        this.createdBy = article.createdBy
+        this.createdBy = article.createdBy;
+        this.image = article.image;
     }
 }

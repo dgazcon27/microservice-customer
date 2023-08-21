@@ -1,5 +1,5 @@
 const { Router } = require("express");
-
+const validateFile = require("../middleware/validateFiles")
 const { 
     createArticle,
     getArticles,
@@ -24,7 +24,7 @@ routerArticle.post('/find-articles', findArticlesById);
 routerArticle.post('/filter-article', getArticleByField)
 routerArticle.post('/article-profit-by-text', createProductByText)
 routerArticle.post('/create-product-from-msg', createProductoFromMessage)
-routerArticle.post('/upload', uploadImageArticle)
+routerArticle.post('/upload', validateFile, uploadImageArticle)
 routerArticle.post('/', createArticle);
 // Endpoint para la reposicion de articulos
 routerArticle.patch('/:id', updateArticle);

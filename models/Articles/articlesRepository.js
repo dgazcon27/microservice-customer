@@ -3,6 +3,7 @@ const Schema = Mongoose.Schema;
 
 const ArticleRepository = Mongoose.model('article', Mongoose.Schema({
     name: { type: String, default: '', required: true, index: true },
+    image: { type: String, default: '', required: true, index: true },
     description: { type: String, default: ''},
     expiredAt: { type: Date, required: true },
     type: { type: String, default: ''},

@@ -176,10 +176,6 @@ const deleteArticleById = (req, res, next) => {
 
 const uploadImageArticle = async (req, res, next) => {
     const { image } = req.files;
-
-    if (!image) return res.sendStatus(400);
-
-    if (/^image/.test(image.mimetype)) return res.sendStatus(400);
     
     image.mv(`${folderPath}/${image.name}`);
     // All good
