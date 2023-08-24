@@ -1,0 +1,12 @@
+service:
+  app:
+    image: node:18-lts/hydrogen-customer
+    command: sh -c "npm i && node app.js"
+    ports:
+      - 127.0.0.1:3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - ./:/upload
+    environment:
+      FOLDER_UPLOAD: ../upload
