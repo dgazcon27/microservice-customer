@@ -1,12 +1,32 @@
-service:
-  app:
-    image: node:18-lts/hydrogen-customer
-    command: sh -c "npm i && node app.js"
+services:
+  app-container:
+    image: api_v1_customer
+    command: sh -c "node app.js"
     ports:
-      - 127.0.0.1:3000:3000
+      - 127.0.0.1:8989:8989
     working_dir: /app
     volumes:
       - ./:/app
-      - ./:/upload
     environment:
       FOLDER_UPLOAD: ../upload
+      PORT: 8989
+      DB_HOST: mongodb-container
+      DB_USER: user_customer
+      DB_PASSWORD: cs_solution
+      DB_DATABASE: myapp
+    depends_on:
+      - mongodb-container
+  mongodb-container:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - data-vol:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    command: --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: cpn_2023
+      MONGO_INITDB_DATABASE: myapp
+volumes:
+  data-vol:

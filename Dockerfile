@@ -4,3 +4,4 @@ COPY package.json ./
 RUN npm i
 COPY . .
 CMD ["node", "app.js"]
+EXPOSE 8989
