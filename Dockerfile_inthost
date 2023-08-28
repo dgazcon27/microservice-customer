@@ -1,6 +1,6 @@
 FROM node:18.16.1
 WORKDIR /
-RUN mkdir upload
+RUN mkdir -p upload/articles
 WORKDIR /app
 # COPY package*.json ./
 # RUN npm i

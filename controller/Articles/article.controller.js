@@ -176,8 +176,8 @@ const deleteArticleById = (req, res, next) => {
 
 const uploadImageArticle = async (req, res, next) => {
     const { image } = req.files;
-    
-    image.mv(`${folderPath}/${image.name}`);
+    const pathLocation = `${folderPath}/${image.name}`;
+    image.mv(pathLocation);
     // All good
     return res.sendStatus(200);
 }
